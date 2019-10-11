@@ -13,7 +13,7 @@ import { AuthService } from '../service/auth.service';
 })
 export class InicoComponent implements OnInit {
   private success : boolean;
-  folios: any [];
+  folios: any [] = [];
   respaldo: any[];
   detalels: any[];
   folio: any;
@@ -23,14 +23,15 @@ export class InicoComponent implements OnInit {
   fecha_prev: any;
   almacen: any;
   proveedor: any;
-
+  empresa: any;
   act_folio: boolean = true;
   act_fecha: boolean=true;
   act_almacen: boolean= true;
   act_proveedor: boolean= true;
   constructor(private router : Router, private auth_serv: AuthService, private folio_serv: FoliosService) {
     let token = this.auth_serv. canActivate();
-    console.log(token);
+    this.empresa = JSON.parse(localStorage.getItem('empresa'));
+    console.log(this.empresa);
     if(token == true){
       //this.router.navigate(['/inicio']);
     }else{
@@ -40,6 +41,7 @@ export class InicoComponent implements OnInit {
    }
 
   ngOnInit() {
+
     this.folio_serv.getFolios().subscribe(
       (response : any)  => {
         var Resp = response;
@@ -49,9 +51,9 @@ export class InicoComponent implements OnInit {
           this.success = jey.success; 
           
         }else {
-          this.folios = jey.data
-          this.respaldo = jey.data
-          console.log(jey.data);
+          this.folios = jey.data.filter(folio =>  folio.id_empresa == this.empresa );
+          this.respaldo = this.folios
+          console.log(this.folios);
         }
       error => {
         console.log(<any>error);
@@ -64,7 +66,7 @@ export class InicoComponent implements OnInit {
     this.comentario = this.folio.comentario_in;
     console.log(this.folio);
     
-    this.folio_serv.getDetalles(this.folio.id_detalles).subscribe(
+    this.folio_serv.getDetalles(this.folio.folio_oc).subscribe(
       (response : any)  => {
         var Resp = response;
         var texto = Resp._body;

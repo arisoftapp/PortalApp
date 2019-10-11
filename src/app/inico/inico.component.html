@@ -55,71 +55,87 @@
     </div>
 </div>
 
+
+
 <!--Cabecera-->
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light degradado" >
   
   <a class="navbar-brand" href="#">
-    <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    <img src="https://arisoft.com.mx/recibido/assets/arisoft_logo_2.png" width="40" height="30" class="d-inline-block align-top" alt="">
     Portal
   </a>
   <button class="btn btn-outline-danger my-2 my-sm-0" (click)="cerrar()" >Cerrar Sesión</button>
 </nav>
-<!--filtros-->
-<div class="container" style="margin-top: 5rem"> 
-    <div class="alert alert-dark" role="alert" >
-      <div class="row" style="margin-bottom: 1rem">
-        <img src="https://arisoft.com.mx/recibido/assets/search.png" width="30" height="30" class="d-inline-block" alt="">
-          Filtrar Por: 
-        <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="flt_prev" [disabled]="!act_folio" (ngModelChange)="cambio(1)"  placeholder="Folio Previo">
-        <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="almacen" [disabled]="!act_almacen" (ngModelChange)="cambio(3)"   placeholder="Almacen">
-        <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="proveedor" [disabled]="!act_proveedor" (ngModelChange)="cambio(4)"   placeholder="proveedor"> 
-      </div>
-      <div class="row">
-        <img src="https://arisoft.com.mx/recibido/assets/calendar.png" width="30" height="30" class="d-inline-block" alt="">
-        Fecha: <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 20%;"  placeholder="Fecha Previo"> <p> {{fecha_prev}} </p>
-        <button type="button"  (click)="filtrar()" class="btn btn-info" style="margin-left: 85%">Cargar Tabla</button>
-      </div>
 
-    </div>  
-</div>
-<!--Tabla-->
-<div class="container" style="margin-top: 5rem">
-  <div class="row justify-content-md-center">
-      <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">folio previo</th>
-              <th scope="col">fecha previo</th>
-              <th scope="col">folio O.C</th>
-              <th scope="col">fecha O.C</th>
-              <th scope="col">Proveedor</th>
-              <th scope="col">Almacen</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Detalles</th>
-              <th scope="col">Estatus</th>
-              <th scope="col">Comentario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of folios;let indice=index">
-              <th scope="row" >{{item.folio_previo}}</th>
-              <td>{{item.fecha_previo | date:'MM/dd/yyyy'}}</td>
-              <td>{{item.folio_oc}}</td>
-              <td>{{item.fecha_oc | date:'MM/dd/yyyy'}}</td>
-              <td>{{item.proveedor}}</td>
-              <td>{{item.almacen}}</td>
-              <td>{{item.usuario}}</td>
-              <td>
-                  <button type="button" (click)="detalles(item)" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">Detalles</button>
-              </td>
-              <td> 
-                <button type="button" *ngIf="item.estatus === 1" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
-                <button type="button" *ngIf="item.estatus === 2" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button></td>
-              <td>
-                  <button type="button" (click)="comentar(item)" class="btn btn-link" data-toggle="modal" data-target="#ModalComentario">Agregar Comentario</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+<!--contenedor-->
+<div class="container col-xs-12 col-sm-6 col-md-8" >
+  <!--filtros-->
+  <div class="" style="margin-top: 5rem"> 
+      <div class="alert alert-dark" role="alert" >
+        <div class="row" style="margin-bottom: 1rem">
+          <img src="https://arisoft.com.mx/recibido/assets/search.png" width="30" height="30" class="d-inline-block" alt="">
+            Filtrar Por: 
+          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="flt_prev" [disabled]="!act_folio" (ngModelChange)="cambio(1)"  placeholder="Folio Previo">
+          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="almacen" [disabled]="!act_almacen" (ngModelChange)="cambio(3)"   placeholder="Almacen">
+          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="proveedor" [disabled]="!act_proveedor" (ngModelChange)="cambio(4)"   placeholder="proveedor"> 
+        </div>
+        <div class="row">
+          <img src="https://arisoft.com.mx/recibido/assets/calendar.png" width="30" height="30" class="d-inline-block" alt="">
+          Fecha: <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 20%;"  placeholder="Fecha Previo"> 
+          <button type="button"  (click)="filtrar()" class="btn btn-info" style="margin-left: 85%">Cargar Tabla</button>
+        </div>
+      </div> 
+      <div class="row justify-content-md-center" [hidden]="act_proveedor && act_almacen && act_folio && act_fecha">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Recuerda!</strong> para habilitar los demas filtros, debes limpiar el filtro en uso
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      </div>
+  </div>
+  <!--Tabla-->
+  <div class="" style="margin-top: 5rem">
+    <div class="row justify-content-md-center">
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">folio previo</th>
+                <th scope="col">fecha previo</th>
+                <th scope="col">folio O.C</th>
+                <th scope="col">fecha O.C</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Almacen</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Detalles</th>
+                <th scope="col">Estatus</th>
+                <th scope="col">Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of folios;let indice=index">
+                <th scope="row" >{{item.folio_previo}}</th>
+                <td>{{item.fecha_previo | date:'MM/dd/yyyy'}}</td>
+                <td>{{item.folio_oc}}</td>
+                <td>{{item.fecha_oc | date:'MM/dd/yyyy'}}</td>
+                <td>{{item.proveedor}}</td>
+                <td>{{item.almacen}}</td>
+                <td>{{item.usuario}}</td>
+                <td>
+                    <button type="button" (click)="detalles(item)" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">Detalles</button>
+                </td>
+                <td> 
+                  <button type="button" *ngIf="item.estatus === '1'" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
+                  <button type="button" *ngIf="item.estatus === '2'" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button></td>
+                <td>
+                    <button type="button" (click)="comentar(item)" class="btn btn-link" data-toggle="modal" data-target="#ModalComentario">Agregar Comentario</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div [hidden]="folios.length" class="alert alert-danger" role="alert">
+               <a class="alert-link">!Lo sentimos¡</a>. No se encontraron datos.  
+          </div>
+    </div>
   </div>
 </div>

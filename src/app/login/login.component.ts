@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       this.Resp = response;
       this.texto = this.Resp._body;
       this.jey = JSON.parse(this.texto);
+      console.log(this.jey)
       this.Success = this.jey.success;
       this.Message = this.jey.message;
       this.hola = this.jey.hola;
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit {
         
         localStorage.setItem('into', JSON.stringify(this.Success));
         localStorage.setItem('tok', JSON.stringify(this.jey.token));
+        localStorage.setItem('empresa', JSON.stringify(this.jey.empresa));
         this.router.navigate(['/inicio']);
         location.reload();
        

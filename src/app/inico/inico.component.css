@@ -26,3 +26,19 @@ body{margin:40px;}
   line-height: 1.33;
   border-radius: 35px;
 }
+.degradado {
+  
+
+  background: -webkit-linear-gradient(left top, #23AAF2 , #9BC9FF); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(bottom right, #23AAF2, #9BC9FF); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(bottom right, #23AAF2, #9BC9FF); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom right, #23AAF2 , #9BC9FF); /* Standard syntax */
+ 
+}
+a{
+  color: black !important;
+}
+
+.inf{
+  color: red !important; 
+}
