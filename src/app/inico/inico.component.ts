@@ -14,6 +14,7 @@ import { AuthService } from '../service/auth.service';
 export class InicoComponent implements OnInit {
   private success : boolean;
   folios: any [] = [];
+  almacenes: any [] = [];
   respaldo: any[];
   detalels: any[];
   folio: any;
@@ -31,7 +32,7 @@ export class InicoComponent implements OnInit {
   constructor(private router : Router, private auth_serv: AuthService, private folio_serv: FoliosService) {
     let token = this.auth_serv. canActivate();
     this.empresa = JSON.parse(localStorage.getItem('empresa'));
-    console.log(this.empresa);
+
     if(token == true){
       //this.router.navigate(['/inicio']);
     }else{
@@ -41,7 +42,12 @@ export class InicoComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getFolios();
+    this.getAlmacen();
+  }
 
+  getFolios(){
+   
     this.folio_serv.getFolios().subscribe(
       (response : any)  => {
         var Resp = response;
@@ -52,19 +58,34 @@ export class InicoComponent implements OnInit {
           
         }else {
           this.folios = jey.data.filter(folio =>  folio.id_empresa == this.empresa );
+          this.folios = this.eliminarObjetosDuplicados(this.folios, 'folio_previo');
           this.respaldo = this.folios
-          console.log(this.folios);
+
         }
       error => {
         console.log(<any>error);
       }
-      });;
+    });;
+  }
+
+  eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup  = {};
+    for (var i in arr) {
+        lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+        nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
   }
 
   detalles(folio: any){
     this.folio = folio;
+    this.detalels =[];
     this.comentario = this.folio.comentario_in;
-    console.log(this.folio);
     
     this.folio_serv.getDetalles(this.folio.folio_oc).subscribe(
       (response : any)  => {
@@ -73,10 +94,29 @@ export class InicoComponent implements OnInit {
         var jey = JSON.parse(texto); 
         if (!jey.success){
           this.success = jey.success; 
-          
         }else {
           this.detalels = jey.data
+          console.log(this.detalels);
+         
+        }
+      error => {
+        console.log(<any>error);
+      }
+      });;
+  }
+
+  getAlmacen(){
+    this.folio_serv.getAlmacen(1).subscribe(
+      (response : any)  => {
+        var Resp = response;
+        var texto = Resp._body;
+        var jey = JSON.parse(texto); 
+        if (!jey.success){
+          this.success = jey.success; 
+        }else {
+          this.almacenes = jey.data;
           console.log(jey.data);
+         
         }
       error => {
         console.log(<any>error);
@@ -95,7 +135,7 @@ export class InicoComponent implements OnInit {
          this.success = jey.success;
        
          if (jey.success){
-            console.log("todo fine");
+           
             this.ngOnInit();
          }
      });
@@ -119,42 +159,42 @@ export class InicoComponent implements OnInit {
 
   cambio(id){
     if(id == 1){
-      this.almacen = "";
+     // this.almacen = "";
       this.proveedor = "";
       this.fecha_prev ="";
-      this.act_almacen = false;
+      //this.act_almacen = false;
       this.act_proveedor = false;
       this.act_fecha = false;
     }else if (id == 2){
-      this.almacen = "";
+      //this.almacen = "";
       this.flt_prev ="";
       this.proveedor = "";
-      this.act_almacen = false;
+      //this.act_almacen = false;
       this.act_proveedor = false;
       this.act_folio = false;
 
-    }else if(id == 3){
+    }/*else if(id == 3){
       this.flt_prev = "";
       this.proveedor = "";
       this.fecha_prev ="";
       this.act_folio = false;
       this.act_proveedor = false;
       this.act_fecha = false;
-    }
+    }*/
     else if(id == 4){
-      this.almacen = "";
+     // this.almacen = "";
       this.flt_prev = "";
       this.fecha_prev ="";
-      this.act_almacen = false;
+      //this.act_almacen = false;
       this.act_folio = false;
       this.act_fecha = false;
     }
     if( this.almacen == "" && this.flt_prev == ""&& this.fecha_prev =="" && this.proveedor ==""){
-      this.act_almacen = true;
+      //this.act_almacen = true;
       this.act_folio = true;
       this.act_fecha = true;
       this.act_proveedor = true;
-      this.ngOnInit();
+      this.getFolios();
     }
   }
 
@@ -165,7 +205,8 @@ export class InicoComponent implements OnInit {
   }
 
   comentar(folio: any){
-    this.comentario=""
+    this.comentario="";
     this.folio = folio;
+    this.comentario = this.folio.comentario;
   }
 }

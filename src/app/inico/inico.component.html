@@ -1,6 +1,6 @@
 <!--Modal-->
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Detalles</h5>
@@ -15,8 +15,20 @@
               <textarea class="form-control" [(ngModel)]="comentario" placeholder="Comentario" [disabled]="true">{{comentario}}</textarea>
           </div>
           <div style="margin-top: 1rem">
-              <div  class="alert alert-info" role="alert"  *ngFor="let item of detalels;let indice=index" style="margin-top: 0%">
-                  {{item.articulo}}
+              <div class="row">
+                <div class="col-md-6" style="text-align: start;">Articulo</div>
+                <div class="col-md-2" style="text-align: center;">Cantidad</div>
+                <div class="col-md-2" style="text-align: center;">Recibido</div>
+                <div class="col-md-2" style="text-align: center;">Pendiente</div>
+              </div>
+                <div  class="alert alert-info row" role="alert"  *ngFor="let item of detalels;let indice=index" style="margin-top: 0%">
+                  <div class="col-md-6" >
+                    <div class="row" >{{item.id_articulo}}</div>
+                    <div class="row" >{{item.articulo}}</div>
+                  </div>
+                  <div class="col-md-2" style="text-align: center;">{{item.cantidad}}</div>
+                  <div class="col-md-2" style="text-align: center;">{{item.recibido}}</div>
+                  <div class="col-md-2" style="text-align: center;">{{item.pendiente}}</div>
               </div>
           </div>
           
@@ -42,7 +54,7 @@
         <!--Body-->
         <div class="modal-body">
           <div>
-              <label for="">Comentario</label>
+              <label for="">Aclaración</label>
               <textarea class="form-control" [(ngModel)]="comentario" placeholder="Comentario"></textarea>
           </div>
         </div>
@@ -59,76 +71,102 @@
 
 <!--Cabecera-->
 <nav class="navbar navbar-light bg-light degradado" >
-  
-  <a class="navbar-brand" href="#">
-    <img src="https://arisoft.com.mx/recibido/assets/arisoft_logo_2.png" width="40" height="30" class="d-inline-block align-top" alt="">
-    Portal
+  <a class="navbar-brand" href="#" style="color: white !important;">
+    <!--<img src="https://arisoft.com.mx/recibido/assets/arisoft_logo_2.png" width="40" height="30" class="d-inline-block align-top" alt="">-->
+   Portal de Entrega
   </a>
-  <button class="btn btn-outline-danger my-2 my-sm-0" (click)="cerrar()" >Cerrar Sesión</button>
+  <button class="btn btn-outline-primary my-2 my-sm-0" (click)="cerrar()" >Cerrar Sesión</button>
 </nav>
 
 <!--contenedor-->
-<div class="container col-xs-12 col-sm-6 col-md-8" >
-  <!--filtros-->
+
+  <div class="container">
+    <div class="container filtros">
+        <div class="row mt-3" >
+            <div class="col-md-2 col-sm-12 mb-2">
+                <img src="https://arisoft.com.mx/recibido/assets/search.png" width="30" height="30" class="d-inline-block" alt="">
+                Filtrar Por: 
+            </div>
+            <div class="col-md-3 col-sm-12 mb-1">
+                <input type="text" class="form-control" style="margin-left: 1rem;width: 90%;" [(ngModel)]="flt_prev" [disabled]="!act_folio" (ngModelChange)="cambio(1)"  placeholder="Folio Previo">
+            </div>
+            <div class="col-md-3 col-sm-8 mb-1">
+                <select class="custom-select" style="margin-left: 1rem; width: 90%;" [(ngModel)]="almacen" [disabled]="!act_almacen" (ngModelChange)="cambio(3)"   placeholder="Almacen">
+                    <option *ngFor="let item of almacenes;let indice=index"> {{item.nombre}} </option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-8 mb-1">
+              <input type="text" class="form-control" style="margin-left: 1rem; width: 90%;" [(ngModel)]="proveedor" [disabled]="!act_proveedor" (ngModelChange)="cambio(4)"   placeholder="proveedor"> 
+            </div>
+          </div>
+      
+          <div class="row mt-3">
+            <div class="col-md-2 col-sm-12 mb-2">
+                <img src="https://arisoft.com.mx/recibido/assets/calendar.png" width="30" height="30"  alt="">
+                Fecha:
+            </div>
+            <div class="col-md-7 col-sm-12">
+                <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 200px;"  placeholder="Fecha Previo"> 
+            </div>
+          </div>
+      
+          <div class="row mt-3 col-sm-12 text-right">
+              <div class="col-md-12" >
+                  <button type="button" (click)="filtrar()" class="btn btn-info mr-2" >Consultar</button>
+              </div> 
+          </div>
+    </div>
+   
+  </div>
+
   <div class="" style="margin-top: 5rem"> 
-      <div class="alert alert-dark" role="alert" >
-        <div class="row" style="margin-bottom: 1rem">
-          <img src="https://arisoft.com.mx/recibido/assets/search.png" width="30" height="30" class="d-inline-block" alt="">
-            Filtrar Por: 
-          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="flt_prev" [disabled]="!act_folio" (ngModelChange)="cambio(1)"  placeholder="Folio Previo">
-          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="almacen" [disabled]="!act_almacen" (ngModelChange)="cambio(3)"   placeholder="Almacen">
-          <input type="text" class="form-control" style="margin-left: 1rem; width: 20%;" [(ngModel)]="proveedor" [disabled]="!act_proveedor" (ngModelChange)="cambio(4)"   placeholder="proveedor"> 
-        </div>
-        <div class="row">
-          <img src="https://arisoft.com.mx/recibido/assets/calendar.png" width="30" height="30" class="d-inline-block" alt="">
-          Fecha: <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 20%;"  placeholder="Fecha Previo"> 
-          <button type="button"  (click)="filtrar()" class="btn btn-info" style="margin-left: 85%">Cargar Tabla</button>
-        </div>
-      </div> 
-      <div class="row justify-content-md-center" [hidden]="act_proveedor && act_almacen && act_folio && act_fecha">
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    
+    <div class="row justify-content-md-center" [hidden]="act_proveedor && act_almacen && act_folio && act_fecha">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <strong>Recuerda!</strong> para habilitar los demas filtros, debes limpiar el filtro en uso
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-      </div>
-      </div>
+        </div>
+    </div>
   </div>
+
   <!--Tabla-->
-  <div class="" style="margin-top: 5rem">
-    <div class="row justify-content-md-center">
-        <table class="table">
-            <thead class="thead-dark">
+<div class="container">
+  <div class="" style="margin-top: 2rem">
+    <div class="row justify-content-md-center table-responsive">
+        <table class="table table-striped">
+            <thead class="">
               <tr>
-                <th scope="col">folio previo</th>
-                <th scope="col">fecha previo</th>
-                <th scope="col">folio O.C</th>
-                <th scope="col">fecha O.C</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Almacen</th>
-                <th scope="col">Usuario</th>
-                <th scope="col">Detalles</th>
-                <th scope="col">Estatus</th>
-                <th scope="col">Comentario</th>
+                <th scope="col" class="align-middle">Folio previo</th>
+                <th scope="col" class="align-middle">Fecha previo</th>
+                <th scope="col" class="align-middle">Folio O.C</th>
+                <th scope="col" class="align-middle">Fecha O.C</th>
+                <th scope="col" class="align-middle">Proveedor</th>
+                <th scope="col" class="align-middle">Almacén</th>
+                <th scope="col" class="align-middle">Usuario</th>
+                <th scope="col" class="align-middle">Detalles</th>
+                <th scope="col" class="align-middle">Estatus</th>
+                <th scope="col" class="align-middle">Aclaración</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of folios;let indice=index">
-                <th scope="row" >{{item.folio_previo}}</th>
-                <td>{{item.fecha_previo | date:'MM/dd/yyyy'}}</td>
-                <td>{{item.folio_oc}}</td>
-                <td>{{item.fecha_oc | date:'MM/dd/yyyy'}}</td>
-                <td>{{item.proveedor}}</td>
-                <td>{{item.almacen}}</td>
-                <td>{{item.usuario}}</td>
-                <td>
+                <th scope="row" class="align-middle" >{{item.folio_previo}}</th>
+                <td class="align-middle">{{item.fecha_previo | date:'MM/dd/yyyy'}}</td>
+                <td class="align-middle">{{item.folio_oc}}</td>
+                <td class="align-middle">{{item.fecha_oc | date:'MM/dd/yyyy'}}</td>
+                <td class="align-middle">{{item.proveedor}}</td>
+                <td class="align-middle">{{item.almacen}}</td>
+                <td class="align-middle">{{item.usuario}}</td>
+                <td class="align-middle">
                     <button type="button" (click)="detalles(item)" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">Detalles</button>
                 </td>
-                <td> 
-                  <button type="button" *ngIf="item.estatus === '1'" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
-                  <button type="button" *ngIf="item.estatus === '2'" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button></td>
-                <td>
-                    <button type="button" (click)="comentar(item)" class="btn btn-link" data-toggle="modal" data-target="#ModalComentario">Agregar Comentario</button>
+                <td class="align-middle"> 
+                  <button type="button" *ngIf="item.estatus === 2" data-toggle="tooltip" data-placement="bottom" title="Aclarado" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
+                  <button type="button" *ngIf="item.estatus === 1" data-toggle="tooltip" data-placement="bottom" title="Pendiente" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button></td>
+                <td class="align-middle">
+                    <button type="button" (click)="comentar(item)" class="btn btn-link" data-toggle="modal" data-target="#ModalComentario">Agregar Aclaración</button>
                 </td>
               </tr>
             </tbody>
@@ -138,4 +176,5 @@
           </div>
     </div>
   </div>
+  
 </div>

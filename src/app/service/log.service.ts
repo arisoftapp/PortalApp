@@ -15,8 +15,8 @@ export class LogService {
   logUser(usuario, token = null){
     //console.log("Usuario:", usuario);
     //console.log(this.global.Admin_URL);
-    //'http://wsar.homelinux.com:3006/'
-    let URL = 'http://localhost:3006/' + 'log';
+    //
+    let URL = 'http://201.107.4.152:3006/'+ 'log';
     const params = JSON.stringify(usuario);
     const headers = new Headers(
       {
@@ -26,7 +26,6 @@ export class LogService {
     
     return this._http.post(URL, params, {headers}).pipe( 
       res =>{
-      console.log('LoginResponse', res);
       return res;
     })
   }
