@@ -12,6 +12,7 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./inico.component.css']
 })
 export class InicoComponent implements OnInit {
+
   private success : boolean;
   folios: any [] = [];
   almacenes: any [] = [];
@@ -19,7 +20,7 @@ export class InicoComponent implements OnInit {
   detalels: any[];
   folio: any;
   comentario;
-
+  mostrar: any = 1;
   flt_prev: any;
   fecha_prev: any;
   almacen: any;
@@ -42,12 +43,15 @@ export class InicoComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getFolios();
+    this.almacen = "0"
     this.getAlmacen();
   }
 
-  getFolios(){
-   
+  catchAlmacen(id: any){
+    this.getFolios(this.almacen);
+  }
+
+  getFolios(almacen: any){
     this.folio_serv.getFolios().subscribe(
       (response : any)  => {
         var Resp = response;
@@ -57,7 +61,7 @@ export class InicoComponent implements OnInit {
           this.success = jey.success; 
           
         }else {
-          this.folios = jey.data.filter(folio =>  folio.id_empresa == this.empresa );
+          this.folios = jey.data.filter(folio =>  folio.id_empresa == this.empresa && folio.id_almacen == almacen);
           this.folios = this.eliminarObjetosDuplicados(this.folios, 'folio_previo');
           this.respaldo = this.folios
 
@@ -142,14 +146,25 @@ export class InicoComponent implements OnInit {
     
   }
 
+  getMostrar(){
+    
+    if (this.mostrar == 1){
+      this.getFolios(this.almacen);
+    }else if(this.mostrar == 2){
+      this.folios = this.respaldo.filter(folio => folio.estatus == 1 );
+    }else if(this.mostrar == 3){
+      this.folios = this.respaldo.filter(folio => folio.estatus == 2 );
+    }
+  }
+
   filtrar(){
     if(this.flt_prev != "" && this.flt_prev != undefined){
       this.folios = this.respaldo.filter(folio => folio.folio_previo == this.flt_prev );
     }else if (this.fecha_prev != "" && this.fecha_prev != undefined){
       this.folios = this.respaldo.filter(folio => folio.fecha_previo.substring(0, 10) == this.fecha_prev);
-    }else if(this.almacen != "" && this.almacen != undefined){
+    }/*else if(this.almacen != "" && this.almacen != undefined){
       this.folios = this.respaldo.filter(folio => folio.almacen == this.almacen );
-    }
+    }*/
     else if(this.proveedor != "" && this.proveedor != undefined){
       this.folios = this.respaldo.filter(folio => folio.proveedor == this.proveedor);
     }else{
@@ -189,12 +204,12 @@ export class InicoComponent implements OnInit {
       this.act_folio = false;
       this.act_fecha = false;
     }
-    if( this.almacen == "" && this.flt_prev == ""&& this.fecha_prev =="" && this.proveedor ==""){
+    if(this.flt_prev == ""&& this.fecha_prev =="" && this.proveedor ==""){
       //this.act_almacen = true;
       this.act_folio = true;
       this.act_fecha = true;
       this.act_proveedor = true;
-      this.getFolios();
+      this.getFolios(this.almacen);
     }
   }
 

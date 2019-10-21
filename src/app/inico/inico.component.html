@@ -91,15 +91,15 @@
                 <input type="text" class="form-control" style="margin-left: 1rem;width: 90%;" [(ngModel)]="flt_prev" [disabled]="!act_folio" (ngModelChange)="cambio(1)"  placeholder="Folio Previo">
             </div>
             <div class="col-md-3 col-sm-8 mb-1">
-                <select class="custom-select" style="margin-left: 1rem; width: 90%;" [(ngModel)]="almacen" [disabled]="!act_almacen" (ngModelChange)="cambio(3)"   placeholder="Almacen">
-                    <option *ngFor="let item of almacenes;let indice=index"> {{item.nombre}} </option>
+                <select class="custom-select" id="almacen" style="margin-left: 1rem; width: 90%;" [(ngModel)]="almacen" placeholder="seleccione Almacén" (change)="catchAlmacen(almacen)">
+                  <option selected value="0">Seleccione Almacén</option>
+                  <option *ngFor="let item of almacenes;" value={{item.id_almacen}}> {{item.nombre}} </option>
                 </select>
             </div>
             <div class="col-md-3 col-sm-8 mb-1">
               <input type="text" class="form-control" style="margin-left: 1rem; width: 90%;" [(ngModel)]="proveedor" [disabled]="!act_proveedor" (ngModelChange)="cambio(4)"   placeholder="proveedor"> 
             </div>
           </div>
-      
           <div class="row mt-3">
             <div class="col-md-2 col-sm-12 mb-2">
                 <img src="https://arisoft.com.mx/recibido/assets/calendar.png" width="30" height="30"  alt="">
@@ -109,12 +109,25 @@
                 <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 200px;"  placeholder="Fecha Previo"> 
             </div>
           </div>
-      
+          <div class="row mt-3">
+            <div class="col-md-2 col-sm-12 mb-2">
+                <img src="https://arisoft.com.mx/recibido/assets/focus.png" width="30" height="30"  alt="">
+                Mostrar:
+            </div>
+              <div class="col-md-3 col-sm-8 mb-1">
+                <select class="custom-select" id="mostrar" style="margin-left: 1rem; width: 90%;" [(ngModel)]="mostrar" placeholder="seleccione Almacén" (change)="getMostrar()">
+                  <option selected value="1" style="background-color: #c0c0fb; color: white;">Todos</option>
+                  <option value="2" style="background-color: #ff000091; color: white;" >Pendientes</option>
+                  <option value="3" style="background-color: #0080008f; color: white;">Aclarados</option>
+                </select>
+            </div>
+          </div>
           <div class="row mt-3 col-sm-12 text-right">
               <div class="col-md-12" >
                   <button type="button" (click)="filtrar()" class="btn btn-info mr-2" >Consultar</button>
               </div> 
           </div>
+
     </div>
    
   </div>
