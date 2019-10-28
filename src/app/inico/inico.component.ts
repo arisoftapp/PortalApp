@@ -48,10 +48,13 @@ export class InicoComponent implements OnInit {
   }
 
   catchAlmacen(id: any){
+ 
+    
     this.getFolios(this.almacen);
   }
 
-  getFolios(almacen: any){
+  getFolios(almacen: string){
+    
     this.folio_serv.getFolios().subscribe(
       (response : any)  => {
         var Resp = response;
@@ -63,7 +66,13 @@ export class InicoComponent implements OnInit {
         }else {
           this.folios = jey.data.filter(folio =>  folio.id_empresa == this.empresa && folio.id_almacen == almacen);
           this.folios = this.eliminarObjetosDuplicados(this.folios, 'folio_previo');
+          for(let item of this. folios){
+            item.fecha_m = item.fecha_previo.substring(0, 10);
+            item.fecha_moc = item.fecha_oc.substring(0, 10);
+          }
           this.respaldo = this.folios
+
+          
 
         }
       error => {
@@ -100,7 +109,7 @@ export class InicoComponent implements OnInit {
           this.success = jey.success; 
         }else {
           this.detalels = jey.data
-          console.log(this.detalels);
+         
          
         }
       error => {
@@ -110,7 +119,7 @@ export class InicoComponent implements OnInit {
   }
 
   getAlmacen(){
-    this.folio_serv.getAlmacen(1).subscribe(
+    this.folio_serv.getAlmacen(this.empresa).subscribe(
       (response : any)  => {
         var Resp = response;
         var texto = Resp._body;
@@ -119,7 +128,7 @@ export class InicoComponent implements OnInit {
           this.success = jey.success; 
         }else {
           this.almacenes = jey.data;
-          console.log(jey.data);
+        
          
         }
       error => {
@@ -147,7 +156,7 @@ export class InicoComponent implements OnInit {
   }
 
   getMostrar(){
-    
+   
     if (this.mostrar == 1){
       this.getFolios(this.almacen);
     }else if(this.mostrar == 2){
@@ -161,6 +170,8 @@ export class InicoComponent implements OnInit {
     if(this.flt_prev != "" && this.flt_prev != undefined){
       this.folios = this.respaldo.filter(folio => folio.folio_previo == this.flt_prev );
     }else if (this.fecha_prev != "" && this.fecha_prev != undefined){
+ 
+      
       this.folios = this.respaldo.filter(folio => folio.fecha_previo.substring(0, 10) == this.fecha_prev);
     }/*else if(this.almacen != "" && this.almacen != undefined){
       this.folios = this.respaldo.filter(folio => folio.almacen == this.almacen );

@@ -106,7 +106,7 @@
                 Fecha:
             </div>
             <div class="col-md-7 col-sm-12">
-                <input type="date"  class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 200px;"  placeholder="Fecha Previo"> 
+                <input type="date" class="form-control" [(ngModel)]="fecha_prev" (change)="cambio(2)" [disabled]="!act_fecha" style="margin-left: 1rem; width: 200px;"  placeholder="Fecha Previo"> 
             </div>
           </div>
           <div class="row mt-3">
@@ -166,9 +166,9 @@
             <tbody>
               <tr *ngFor="let item of folios;let indice=index">
                 <th scope="row" class="align-middle" >{{item.folio_previo}}</th>
-                <td class="align-middle">{{item.fecha_previo | date:'MM/dd/yyyy'}}</td>
-                <td class="align-middle">{{item.folio_oc}}</td>
-                <td class="align-middle">{{item.fecha_oc | date:'MM/dd/yyyy'}}</td>
+                <td class="align-middle">{{item.fecha_m | date:"MM/dd/yyyy"}}</td>
+                <td class="align-middle">{{item.folio_oc }}</td>
+                <td class="align-middle">{{item.fecha_moc | date:"MM/dd/yyyy"}}</td>
                 <td class="align-middle">{{item.proveedor}}</td>
                 <td class="align-middle">{{item.almacen}}</td>
                 <td class="align-middle">{{item.usuario}}</td>
